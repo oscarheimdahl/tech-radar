@@ -74,15 +74,16 @@ export function drawBubble({
   const { x, y } = findEmptySpot();
   // const color = distanceToColor(distanceFromCenter);
   bubblePositions.push({ x, y });
-  const bubble = new k.Circle({
+  const bubble = new k.Rect({
+    cornerRadius: 3,
     name: 'asd',
-    x: x + dim / 2,
-    y: y + dim / 2,
+    x: x + dim / 2 - width / 2,
+    y: y + dim / 2 - width / 2,
     width: width,
-    fill: 'transparent',
+    height: width,
+    fill: '#444444',
     id: id,
-    strokeWidth: 2,
-    stroke: 'black',
+
     // shadowColor: '#00000033',
     // shadowOffsetY: 2,
     // shadowBlur: 4,

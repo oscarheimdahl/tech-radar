@@ -59,9 +59,9 @@ function drawQuarterCircle(
 
 function drawRadar() {
   drawQuarterCircle(diameter / 2, 1, '#ff4400');
-  drawQuarterCircle(diameter / 2, 2, '#4444ff');
+  drawQuarterCircle(diameter / 2, 2, '#0044ff');
   drawQuarterCircle(diameter / 2, 3, '#ff4444');
-  drawQuarterCircle(diameter / 2, 4, '#0044ff');
+  drawQuarterCircle(diameter / 2, 4, '#67b588');
 
   // drawOutlineCircle(diameter);
   // drawOutlineCircle(diameter / 4);

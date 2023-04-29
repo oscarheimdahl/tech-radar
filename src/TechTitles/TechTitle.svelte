@@ -16,9 +16,9 @@
   });
   let style = '';
   $: {
-    style = 'opacity-60';
+    style = 'opacity-90';
     if (thisSelected) style = 'opacity-100';
-    // if (otherSelected) style = 'opacity-50';
+    if (otherSelected) style = 'opacity-50';
   }
 </script>
 

@@ -14,17 +14,19 @@
   } from './store/selectedTechStore';
 
   let container: HTMLDivElement | null = null;
-  let bubbles: k.Circle[] = [];
+  let bubbles: k.Rect[] = [];
 
   selectedTechStore.subscribe((selectedTechId) => {
     bubbles.forEach((bubble) => {
       if (bubble.id() === selectedTechId) {
         new k.Tween({
           node: bubble,
-          duration: 0.2,
+          duration: 0.1,
           easing: k.Easings.EaseInOut,
           scaleX: 2,
           scaleY: 2,
+          offsetX: bubble.width() / 4,
+          offsetY: bubble.width() / 4,
         }).play();
         bubble.zIndex(99);
         bubble.strokeWidth(1);
@@ -32,10 +34,12 @@
         bubble.strokeWidth(2);
         new k.Tween({
           node: bubble,
-          duration: 0.2,
+          duration: 0.1,
           easing: k.Easings.EaseInOut,
           scaleX: 1,
           scaleY: 1,
+          offsetX: 0,
+          offsetY: 0,
         }).play();
       }
     });
