@@ -2,64 +2,99 @@
   import { default as k } from 'Konva';
   import { onMount } from 'svelte';
   import {
-    bubbleAnimation,
     bubblesLayer,
     dim,
-    drawBubbles,
+    fadeInBubbleLayer,
+    hideBubbleLayer,
     radarLayer,
   } from './canvas';
+  import { techs as dummyTechs } from './canvas/techData';
+  import {
+    drawBubble,
+    highlightBubble,
+    resetBubble,
+    unHighlightBubble,
+  } from './canvas/bubble';
+  import { drawLabel, highlightLabel, unHighlightLabel } from './canvas/label';
   import {
     selectedTechStore,
     setSelectedTech,
   } from './store/selectedTechStore';
+  import { techId, techsStore, type Tech, setTechs } from './store/techsStore';
 
   let container: HTMLDivElement | null = null;
   let bubbles: k.Rect[] = [];
-
-  selectedTechStore.subscribe((selectedTechId) => {
-    bubbles.forEach((bubble) => {
-      if (bubble.id() === selectedTechId) {
-        new k.Tween({
-          node: bubble,
-          duration: 0.1,
-          easing: k.Easings.EaseInOut,
-          scaleX: 2,
-          scaleY: 2,
-          offsetX: bubble.width() / 4,
-          offsetY: bubble.width() / 4,
-        }).play();
-        bubble.zIndex(99);
-        bubble.strokeWidth(1);
-      } else {
-        bubble.strokeWidth(2);
-        new k.Tween({
-          node: bubble,
-          duration: 0.1,
-          easing: k.Easings.EaseInOut,
-          scaleX: 1,
-          scaleY: 1,
-          offsetX: 0,
-          offsetY: 0,
-        }).play();
-      }
-    });
-  });
+  let labels: k.Label[] = [];
 
   onMount(() => {
-    const stage = new k.Stage({
+    stage = new k.Stage({
       container: container,
       width: dim,
       height: dim,
     });
-    bubbles = drawBubbles({
-      mouseover: (id) => setSelectedTech(id),
-      mouseleave: () => setSelectedTech(''),
-    });
+    setTechs(dummyTechs);
+  });
 
+  selectedTechStore.subscribe((selectedTechId) => {
+    bubbles.forEach((bubble) => {
+      if (bubble.id() === selectedTechId) {
+        highlightBubble(bubble);
+      } else if (!selectedTechId) {
+        resetBubble(bubble);
+      } else {
+        unHighlightBubble(bubble);
+      }
+    });
+    labels.forEach((label) => {
+      if (label.id() === selectedTechId) {
+        highlightLabel(label);
+      } else {
+        unHighlightLabel(label);
+      }
+    });
+  });
+
+  let stage: k.Stage;
+
+  techsStore.subscribe((techs) => {
+    if (!stage) return;
+    hideBubbleLayer();
+    bubblesLayer.destroy();
     stage.add(radarLayer);
     stage.add(bubblesLayer);
-    setTimeout(() => bubbleAnimation.play(), 1400);
+    buildBubblesWithLabels(techs);
+    setTimeout(fadeInBubbleLayer, 500);
   });
+
+  function buildBubblesWithLabels(techs: Tech[]) {
+    const newBubbles: k.Rect[] = [];
+    const newLabels: k.Label[] = [];
+    techs.forEach((tech) => {
+      const bubble = drawBubble({
+        distanceFromCenter: tech.val,
+        quarter: tech.quarter as 0 | 1 | 2 | 3,
+        layer: bubblesLayer,
+        mouseover: (id) => setSelectedTech(id),
+        mouseleave: () => setSelectedTech(''),
+        id: techId(tech),
+      });
+      const label = drawLabel({
+        layer: bubblesLayer,
+        x: bubble.x(),
+        y: bubble.y() + bubble.height() / 2,
+        xOffset: bubble.width() * 1.5,
+        text: tech.name,
+        id: techId(tech),
+      });
+      newBubbles.push(bubble);
+      newLabels.push(label);
+    });
+    bubbles = newBubbles;
+    labels = newLabels;
+  }
 </script>
 
-<div bind:this={container} />
+<div
+  class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+  bind:this={container}
+/>

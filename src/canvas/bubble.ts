@@ -19,7 +19,6 @@ function map(
 function quarterToAngle(quarter: 0 | 1 | 2 | 3) {
   return quarter * 90;
 }
-
 const bubblePositions: { x: number; y: number }[] = [];
 export function drawBubble({
   distanceFromCenter,
@@ -40,11 +39,12 @@ export function drawBubble({
   const QUARTER = 90;
   const distanceFromEdge = map(distanceFromCenter, 0, 99, 10, 1);
 
-  let i = 0;
+  let tries = 0;
 
   function findEmptySpot() {
+    const maxTries = 0;
     while (true) {
-      i++;
+      tries++;
       const angle =
         quarterToAngle(quarter) +
         random() * (QUARTER - distanceFromEdge * 2) +
@@ -63,16 +63,19 @@ export function drawBubble({
 
       let overlap = false;
       bubblePositions.forEach(({ x: _x, y: _y }) => {
-        if (Math.abs(x - _x) < width * 2 && Math.abs(y - _y) < width * 2) {
+        const distanceMultiplier = map(tries, 0, maxTries, 5, 1.5);
+        if (
+          Math.abs(x - _x) < width * distanceMultiplier &&
+          Math.abs(y - _y) < width * distanceMultiplier
+        ) {
           overlap = true;
         }
       });
-      if (!overlap) return { x, y };
-      if (i > 20000) return { x, y };
+      if (!overlap || tries > maxTries) return { x, y };
     }
   }
   const { x, y } = findEmptySpot();
-  // const color = distanceToColor(distanceFromCenter);
+
   bubblePositions.push({ x, y });
   const bubble = new k.Rect({
     cornerRadius: 3,
@@ -83,11 +86,6 @@ export function drawBubble({
     height: width,
     fill: '#444444',
     id: id,
-
-    // shadowColor: '#00000033',
-    // shadowOffsetY: 2,
-    // shadowBlur: 4,
-    // strokeWidth: 1,
   });
 
   bubble.on('mouseover', () => mouseover(id));
@@ -96,9 +94,30 @@ export function drawBubble({
   layer.add(bubble);
   return bubble;
 }
-function distanceToColor(distanceFromCenter: number) {
-  if (distanceFromCenter > 75) return '#ba2d41';
-  if (distanceFromCenter > 50) return '#F56D43';
-  if (distanceFromCenter > 25) return '#4394C4';
-  return '#74A26F';
+export function highlightBubble(bubble: k.Rect) {
+  new k.Tween({
+    node: bubble,
+    duration: 0.1,
+    easing: k.Easings.EaseInOut,
+  }).play();
+  bubble.zIndex(99);
+}
+export function unHighlightBubble(bubble: k.Rect) {
+  bubble.strokeWidth(2);
+  new k.Tween({
+    node: bubble,
+    duration: 0.1,
+    easing: k.Easings.EaseInOut,
+    opacity: 0.5,
+  }).play();
+}
+
+export function resetBubble(bubble: k.Rect) {
+  bubble.strokeWidth(2);
+  new k.Tween({
+    node: bubble,
+    duration: 0.1,
+    easing: k.Easings.EaseInOut,
+    opacity: 1,
+  }).play();
 }

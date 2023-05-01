@@ -1,12 +1,4 @@
-export function techId(tech: Tech) {
-  return `${tech.name}-${tech.val}-${tech.quarter}`;
-}
-
-export interface Tech {
-  val: number;
-  quarter: 0 | 1 | 2 | 3;
-  name: string;
-}
+import type { Tech } from '../store/techsStore';
 
 export const techs: Tech[] = [
   {

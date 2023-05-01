@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { techId, type Tech } from '../canvas/techData';
   import {
     selectedTechStore,
     setSelectedTech,
   } from '../store/selectedTechStore';
+  import { techId, type Tech } from '../store/techsStore';
   export let tech: Tech;
 
   const id = techId(tech);
