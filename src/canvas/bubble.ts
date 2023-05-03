@@ -1,5 +1,5 @@
 import { default as k } from 'Konva';
-import { diameter, dim } from '.';
+import { bubblesLayer, diameter, dim } from '.';
 
 var seed = 2;
 function random() {
@@ -100,7 +100,7 @@ export function highlightBubble(bubble: k.Rect) {
     duration: 0.1,
     easing: k.Easings.EaseInOut,
   }).play();
-  bubble.zIndex(99);
+  bubble.zIndex(bubblesLayer.children.length - 1);
 }
 export function unHighlightBubble(bubble: k.Rect) {
   bubble.strokeWidth(2);

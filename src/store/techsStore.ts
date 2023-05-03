@@ -4,6 +4,7 @@ export interface Tech {
   val: number;
   quarter: 0 | 1 | 2 | 3;
   name: string;
+  id: string;
 }
 
 export function techId(tech: Tech) {

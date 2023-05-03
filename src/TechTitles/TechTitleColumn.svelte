@@ -7,7 +7,7 @@
 
 <div class="flex flex-col">
   <h2 class="font-semibold ml-2">{title}</h2>
-  <div class={`flex flex-col p-4 rounded-lg h-min ${$$props.class}`}>
+  <div class={`flex flex-col p-4 rounded-lg h-min ${$$props.class} shadow-sm`}>
     {#each techs as tech}
       <TechTitle {tech} />
     {/each}

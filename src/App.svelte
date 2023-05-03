@@ -1,4 +1,5 @@
 <script lang="ts">
+  import FileDragArea from './FileDragArea.svelte';
   import Radar from './Radar.svelte';
   import TechTitleColumn from './TechTitles/TechTitleColumn.svelte';
   import TechTitles from './TechTitles/TechTitles.svelte';
@@ -10,6 +11,7 @@
   });
 </script>
 
+<Radar />
 <div class="h-full flex items-stretch gap-4 justify-between">
   <TechTitles position="first">
     <TechTitleColumn
@@ -23,7 +25,6 @@
       techs={techs.filter((t) => t.quarter === 2)}
     />
   </TechTitles>
-  <Radar />
   <TechTitles position="last">
     <TechTitleColumn
       title={'Frontend'}
@@ -37,3 +38,4 @@
     />
   </TechTitles>
 </div>
+<FileDragArea />

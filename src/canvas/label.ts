@@ -1,5 +1,5 @@
 import { default as k } from 'Konva';
-import { dim } from '.';
+import { bubblesLayer, dim } from '.';
 
 export function drawLabel({
   layer,
@@ -58,7 +58,7 @@ export function highlightLabel(label: k.Label) {
     scaleX: 1,
     scaleY: 1,
   }).play();
-  label.zIndex(99);
+  label.zIndex(bubblesLayer.children.length - 1);
 }
 export function unHighlightLabel(label: k.Label) {
   new k.Tween({
