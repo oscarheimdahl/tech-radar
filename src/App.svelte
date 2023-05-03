@@ -4,6 +4,9 @@
   import TechTitleColumn from './TechTitles/TechTitleColumn.svelte';
   import TechTitles from './TechTitles/TechTitles.svelte';
   import { techsStore, type Tech } from './store/techsStore';
+  import { techs as techData } from './canvas/techData';
+
+  console.log(techData);
 
   let techs: Tech[] = [];
   techsStore.subscribe((_techs) => {
@@ -11,6 +14,11 @@
   });
 </script>
 
+<div
+  class="flex w-full justify-center absolute text-gray-400 transition-colors hover:text-black"
+>
+  Drop a json file to input your own data, example in console.
+</div>
 <Radar />
 <div class="h-full flex items-stretch gap-4 justify-between">
   <TechTitles position="first">

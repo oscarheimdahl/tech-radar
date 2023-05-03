@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { techs } from './canvas/techData';
   import { parseJSONTechs } from './helpers/parseTechs';
   import { setTechs, type Tech } from './store/techsStore';
 
@@ -20,7 +19,6 @@
         setTechs(techs);
       } catch (e) {
         alert(`${e}\nCheck console for example JSON.`);
-        console.log(techs);
       }
     });
   }
