@@ -36,9 +36,7 @@
   });
 
   selectedTechStore.subscribe((selectedTechId) => {
-    console.log({ selectedTechId });
     bubbles.forEach((bubble) => {
-      console.log({ id: bubble.id() });
       if (bubble.id() === selectedTechId) {
         highlightBubble(bubble);
       } else if (!selectedTechId) {
@@ -69,7 +67,6 @@
   });
 
   function buildBubblesWithLabels(techs: Tech[]) {
-    console.log(techs);
     const newBubbles: k.Rect[] = [];
     const newLabels: k.Label[] = [];
     techs.forEach((tech) => {
